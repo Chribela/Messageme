@@ -1,8 +1,8 @@
-.addUser {
+.addUser{
   width: max-content;
   height: max-content;
   padding: 30px;
-  background-color: rgba(17, 25, 40, 0.81);
+  background-color: rgba(17, 25, 40, 0.781);
   border-radius: 10px;
   position: absolute;
   top: 0;
@@ -10,60 +10,54 @@
   left: 0;
   right: 0;
   margin: auto;
-}
 
-.addUser .input-group {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
-}
+  form{
+    display: flex;
+    gap: 20px;
 
-.addUser input {
-  padding: 20px;
-  border-radius: 10px;
-  border: none;
-  outline: none;
-}
+    input{
+      padding: 20px;
+      border-radius: 10px;
+      border: none;
+      outline: none;
+    }
 
-.addUser button {
-  padding: 20px;
-  border-radius: 10px;
-  background-color: #1a73e8;
-  color: white;
-  border: none;
-  cursor: pointer;
-}
+    button{
+      padding: 20px;
+      border-radius: 10px;
+      background-color: #1a73e8;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+  }
 
-.addUser form {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
+  .user{
+    margin-top: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
-.user {
-  margin-top: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
+    .detail{
+      display: flex;
+      align-items: center;
+      gap: 20px;
 
-.detail {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
+      img{
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+    }
 
-.detail img {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-}
-
-.user button {
-  padding: 10px;
-  border-radius: 10px;
-  background-color: #1a73e8;
-  color: white;
-  border: none;
-  cursor: pointer;
+    button{
+      padding: 10px;
+      border-radius: 10px;
+      background-color: #1a73e8;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+  }
 }
