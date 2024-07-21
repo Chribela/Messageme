@@ -1,13 +1,12 @@
-import React from 'react';
 import { ToastContainer } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 
 const Notification = () => {
   return (
-    <div className="toast-container">
+    <div className=''>
       <ToastContainer position="bottom-right"/>
     </div>
-  );
-};
+  )
+}
 
-export default Notification;
+export default Notification

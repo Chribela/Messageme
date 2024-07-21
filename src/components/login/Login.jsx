@@ -6,7 +6,7 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { auth, db } from "../../lib/firebase";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, collection, query, where, getDocs } from "firebase/firestore";
 import upload from "../../lib/upload";
 
 const Login = () => {
@@ -34,22 +34,28 @@ const Login = () => {
     const { username, email, password } = Object.fromEntries(formData);
 
     // VALIDATE INPUTS
-    if (!username || !email || !password)
-      return toast.warn("Please enter inputs!");
-    if (!avatar.file) return toast.warn("Please upload an avatar!");
-
-    // VALIDATE UNIQUE USERNAME
-    // eslint-disable-next-line no-undef
-    const usersRef = collection(db, "users");
-    // eslint-disable-next-line no-undef
-    const q = query(usersRef, where("username", "==", username));
-    // eslint-disable-next-line no-undef
-    const querySnapshot = await getDocs(q);
-    if (!querySnapshot.empty) {
-      return toast.warn("Select another username");
+    if (!username || !email || !password) {
+      toast.warn("Please enter inputs!");
+      setLoading(false);
+      return;
+    }
+    if (!avatar.file) {
+      toast.warn("Please upload an avatar!");
+      setLoading(false);
+      return;
     }
 
     try {
+      // VALIDATE UNIQUE USERNAME
+      const usersRef = collection(db, "users");
+      const q = query(usersRef, where("username", "==", username));
+      const querySnapshot = await getDocs(q);
+      if (!querySnapshot.empty) {
+        toast.warn("Select another username");
+        setLoading(false);
+        return;
+      }
+
       const res = await createUserWithEmailAndPassword(auth, email, password);
 
       const imgUrl = await upload(avatar.file);
@@ -68,7 +74,7 @@ const Login = () => {
 
       toast.success("Account created! You can login now!");
     } catch (err) {
-      console.log(err);
+      console.error(err);
       toast.error(err.message);
     } finally {
       setLoading(false);
@@ -84,8 +90,9 @@ const Login = () => {
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
+      toast.success("Logged in successfully!");
     } catch (err) {
-      console.log(err);
+      console.error(err);
       toast.error(err.message);
     } finally {
       setLoading(false);
@@ -97,9 +104,9 @@ const Login = () => {
       <div className="item">
         <h2>Welcome back,</h2>
         <form onSubmit={handleLogin}>
-          <input type="text" placeholder="Email" name="email" />
-          <input type="password" placeholder="Password" name="password" />
-          <button disabled={loading}>{loading ? "Loading" : "Sign In"}</button>
+          <input type="email" placeholder="Email" name="email" required />
+          <input type="password" placeholder="Password" name="password" required />
+          <button type="submit" disabled={loading}>{loading ? "Loading..." : "Sign In"}</button>
         </form>
       </div>
       <div className="separator"></div>
@@ -107,7 +114,7 @@ const Login = () => {
         <h2>Create an Account</h2>
         <form onSubmit={handleRegister}>
           <label htmlFor="file">
-            <img src={avatar.url || "./avatar.png"} alt="" />
+            <img src={avatar.url || "./avatar.png"} alt="Avatar" />
             Upload an image
           </label>
           <input
@@ -115,11 +122,12 @@ const Login = () => {
             id="file"
             style={{ display: "none" }}
             onChange={handleAvatar}
+            accept="image/*"
           />
-          <input type="text" placeholder="Username" name="username" />
-          <input type="text" placeholder="Email" name="email" />
-          <input type="password" placeholder="Password" name="password" />
-          <button disabled={loading}>{loading ? "Loading" : "Sign Up"}</button>
+          <input type="text" placeholder="Username" name="username" required />
+          <input type="email" placeholder="Email" name="email" required />
+          <input type="password" placeholder="Password" name="password" required />
+          <button type="submit" disabled={loading}>{loading ? "Loading..." : "Sign Up"}</button>
         </form>
       </div>
     </div>
